@@ -1,0 +1,21 @@
+{
+    "manifest_version": 3,
+    "name": "PolyLang Web Translator",
+    "version": "1.0",
+    "description": "Translate website content to Korean, Japanese, Russian, and more.",
+    "permissions": ["scripting", "activeTab", "storage"],
+    "host_permissions": ["http://127.0.0.1:8000/"],
+    "action": {
+      "default_popup": "popup.html"
+    },
+    "background": {
+      "service_worker": "background.js"
+    },
+    "content_scripts": [
+      {
+        "matches": ["<all_urls>"],
+        "js": ["content.js"]
+      }
+    ]
+  }
+  
