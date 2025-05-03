@@ -1,68 +1,141 @@
-<<<<<<< HEAD
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+PolyLang Translator
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+PolyLang is a translation web extension and service that uses Azure Cognitive Services to translate text from one language to another. This project is split into two parts: the frontend (browser extension) and the backend (API for translation).
 
-## About Laravel
+Features
+- Translate web pages via a browser extension.
+- Use Azure Cognitive Services for translations.
+- Supports multiple languages via the extension interface.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Table of Contents
+1. Prerequisites
+2. Setup
+   - Frontend (Browser Extension)
+   - Backend (Laravel API)
+3. Usage
+4. Contributing
+5. License
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Prerequisites
+Before getting started, make sure you have the following installed:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP and Laravel (for running the backend API)
+- Composer (for managing PHP dependencies)
+- Git (for version control)
+- Azure Cognitive Services Account (for using the translation API)
 
-## Learning Laravel
+Setup
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Frontend (Browser Extension)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+1. Clone the Repository
 
-## Laravel Sponsors
+   If you haven't cloned the repository yet, run the following command:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+   git clone https://github.com/Cedie99/PolyLang.git
+   cd PolyLang
 
-### Premium Partners
+2. Install the Extension Locally
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+   - Open Chrome and navigate to `chrome://extensions/`.
+   - Enable "Developer Mode" (top-right corner).
+   - Click on "Load Unpacked" and select the folder containing the extension files.
+   - You should now be able to use the extension on any website.
 
-## Contributing
+4. Set Up Azure API Key
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+   - Create an Azure Cognitive Services Translator instance.
+   - Add your **API Key** and **Region** in the `background.js` or the extension's configuration file to authenticate with the translation API.
 
-## Code of Conduct
+Backend (Laravel API)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+1. Clone the Repository
 
-## Security Vulnerabilities
+   If you haven't cloned the repository yet, run the following command:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+   git clone https://github.com/Cedie99/PolyLang.git
+   cd PolyLang/backend
 
-## License
+2. Install PHP Dependencies
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-=======
-# PolyLang
->>>>>>> 1c81c8d48b8ff9a9574411b7447a8e10bf69882d
+   Ensure you have Composer installed and run the following command to install the necessary dependencies for the Laravel backend:
+
+   composer install
+
+3. Configure Environment Variables
+
+   Copy `.env.example` to `.env` and update the environment variables, especially the Azure translation API key:
+
+   cp .env.example .env
+
+   Edit the `.env` file:
+
+   AZURE_TRANSLATOR_KEY=your-azure-subscription-key
+   AZURE_TRANSLATOR_REGION=your-azure-region
+
+4. Run the Laravel Development Server
+
+   Run the Laravel development server:
+
+   php artisan serve
+
+   This will start your backend API at `http://localhost:8000`.
+
+Usage
+
+Frontend (Browser Extension)
+
+1. Translate Web Pages
+   - Click on the extension icon in your browser.
+   - Select the language you want to translate the page into.
+   - The page will automatically reload with the translated text.
+
+
+Backend (Laravel API)
+
+1. API Endpoint for Translation
+
+   The backend exposes an endpoint that can be used to translate text:
+
+   POST /api/translate
+
+   - Request body: 
+
+     {
+       "text": "Text to be translated",
+       "target": "Target language code (e.g., 'fr' for French)"
+     }
+
+   - Response:
+
+     {
+       "translatedText": "Translated text"
+     }
+
+2. Example Request:
+   
+   You can test the API using a tool like Postman or cURL.
+
+   curl -X POST http://localhost:8000/api/translate \
+        -H "Content-Type: application/json" \
+        -d '{"text": "Hello, world!", "target": "es"}'
+
+   The response will be:
+
+   {
+     "translatedText": "¡Hola, mundo!"
+   }
+
+Contributing
+
+Contributions are always welcome! If you'd like to contribute, feel free to submit a pull request or open an issue.
+
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature/your-feature`).
+3. Make your changes and commit them (`git commit -am 'Add new feature'`).
+4. Push to your branch (`git push origin feature/your-feature`).
+5. Open a pull request.
+
+License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
