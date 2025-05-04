@@ -15,45 +15,108 @@ document.getElementById('translateBtn').addEventListener('click', () => {
   });
 });
 
+const languages = {
+  "af": "Afrikaans",
+  "ar": "Arabic",
+  "bg": "Bulgarian",
+  "bn": "Bangla",
+  "ca": "Catalan",
+  "cs": "Czech",
+  "da": "Danish",
+  "nl": "Dutch",
+  "de": "German",
+  "el": "Greek",
+  "en": "English",
+  "et": "Estonian",
+  "fil": "Filipino",
+  "fi": "Finnish",
+  "fr": "French",
+  "gu": "Gujarati",
+  "he": "Hebrew",
+  "hi": "Hindi",
+  "hr": "Croatian",
+  "hu": "Hungarian",
+  "id": "Indonesian",
+  "it": "Italian",
+  "ja": "Japanese",
+  "kn": "Kannada",
+  "ko": "Korean",
+  "lt": "Lithuanian",
+  "lv": "Latvian",
+  "ml": "Malayalam",
+  "mr": "Marathi",
+  "ms": "Malay",
+  "no": "Norwegian",
+  "fa": "Persian",
+  "pa": "Punjabi",
+  "pl": "Polish",
+  "pt": "Portuguese",
+  "ro": "Romanian",
+  "ru": "Russian",
+  "sk": "Slovak",
+  "sl": "Slovenian",
+  "es": "Spanish",
+  "sv": "Swedish",
+  "ta": "Tamil",
+  "te": "Telugu",
+  "th": "Thai",
+  "tr": "Turkish",
+  "uk": "Ukrainian",
+  "ur": "Urdu",
+  "vi": "Vietnamese",
+  "zh-Hans": "Chinese (Simplified)",
+  "zh-Hant": "Chinese (Traditional)"
+};
+
+function populateLanguageDropdown() {
+  const select = document.getElementById('languageSelect');
+  for (const code in languages) {
+    const option = document.createElement('option');
+    option.value = code;
+    option.textContent = languages[code];
+    select.appendChild(option);
+  }
+}
+
+populateLanguageDropdown();
+
+
 async function translatePage(language) {
   const textNodes = [];
   const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
   let node;
   while ((node = walker.nextNode())) {
-      if (node.nodeValue.trim()) textNodes.push(node);
+    if (node.nodeValue.trim()) textNodes.push(node);
   }
 
-  textNodes.forEach(async (node) => {
-      const originalText = node.nodeValue;
-      console.log(`Translating: ${originalText}`); // Log the original text
+  for (const node of textNodes) {
+    const originalText = node.nodeValue;
 
-      try {
-          const endpoint = "https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&to=" + language;
+    try {
+      const endpoint = "https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&to=" + language;
 
-          const response = await fetch(endpoint, {
-              method: "POST",
-              headers: {
-                  "Content-Type": "application/json",
-                  "Ocp-Apim-Subscription-Key": "DbfWVDjlQlmuqk9XS12kroLSAdUqYGrXz5egWeYiqGzyQmHxGKZaJQQJ99BEACqBBLyXJ3w3AAAbACOGmFj3",
-                  "Ocp-Apim-Subscription-Region": "southeastasia" // e.g., "eastus"
-              },
-              body: JSON.stringify([{ "Text": originalText }])
-          });
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Ocp-Apim-Subscription-Key": "DbfWVDjlQlmuqk9XS12kroLSAdUqYGrXz5egWeYiqGzyQmHxGKZaJQQJ99BEACqBBLyXJ3w3AAAbACOGmFj3",
+          "Ocp-Apim-Subscription-Region": "southeastasia"
+        },
+        body: JSON.stringify([{ Text: originalText }])
+      });
 
-          const data = await response.json();
-          console.log('Translation response:', data); // Log the entire API response
+      const data = await response.json();
 
-          if (data && data[0] && data[0].translations && data[0].translations[0]) {
-              const translatedText = data[0].translations[0].text;
-              console.log(`Original: ${originalText}, Translated: ${translatedText}`); // Log the original and translated text
-              node.nodeValue = translatedText;
-          } else {
-              console.error('Translation error:', data); // Log error if translation data is missing
-              node.nodeValue = '[Translation Error]';
-          }
-      } catch (error) {
-          console.error('Translation error:', error); // Log any errors during fetch
-          node.nodeValue = '[Translation Error]';  // Show error message if API call fails
+      if (data && data[0]?.translations?.[0]?.text) {
+        node.nodeValue = data[0].translations[0].text;
+      } else {
+        console.error("Bad translation response:", data);
+        node.nodeValue = '[Translation Error]';
       }
-  });
+    } catch (error) {
+      console.error("Error translating:", error);
+      node.nodeValue = '[Translation Failed]';
+    }
+  }
 }
+
